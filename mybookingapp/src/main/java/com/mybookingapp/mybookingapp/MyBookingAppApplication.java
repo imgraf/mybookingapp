@@ -35,7 +35,7 @@ public class MyBookingAppApplication {
 
 			switch (command) {
 				case "1":
-					// Buchen
+					// Book
 					myApp.book();
 					System.out.println("Bitte geben Sie den Film-ID ein:");
 					Long movieId = Long.parseLong(scanner.nextLine());
@@ -46,45 +46,63 @@ public class MyBookingAppApplication {
 					TicketRequest ticketRequest = new TicketRequest();
 					ticketRequest.setBuyerName(buyerName);
 					ticketRequest.setTicketCount(ticketCount);
-					// Sie müssen die Methode im MovieService und TicketRequest aktualisieren, um movieId und ticketCount zu behandeln
+
 					Ticket newTicket = movieService.buyTicket(ticketRequest);
 					System.out.println("Ticket erfolgreich gebucht. Ihre Ticket-ID ist: " + newTicket.getId());
 					break;
 
 				case "2":
-					// Ändern
-					System.out.println("Bitte geben Sie die Ticket-ID ein, die Sie ändern möchten:");
-					Long ticketIdToUpdate = Long.parseLong(scanner.nextLine());
-					System.out.println("Bitte geben Sie den neuen Käufernamen ein:");
-					String newBuyerName = scanner.nextLine();
-					System.out.println("Bitte geben Sie die neue Anzahl der Tickets ein:");
-					int newTicketCount = Integer.parseInt(scanner.nextLine());
-					TicketRequest updateRequest = new TicketRequest();
-					updateRequest.setBuyerName(newBuyerName);
-					updateRequest.setTicketCount(newTicketCount);
-					try {
-						Ticket updatedTicket = movieService.updateTicket(ticketIdToUpdate, updateRequest);
-						System.out.println("Ticket erfolgreich aktualisiert.");
-					} catch (IllegalArgumentException e) {
-						System.out.println(e.getMessage());
+					// Change
+					while (true) {
+						try {
+							System.out.println("Bitte geben Sie die Ticket-ID ein, die Sie ändern möchten:");
+							String ticketIdInput = scanner.nextLine();
+							if ("exit".equalsIgnoreCase(ticketIdInput)) {
+								break; // user chose to exit, break the loop
+							}
+							Long ticketIdToUpdate = Long.parseLong(ticketIdInput);
+
+							System.out.println("Bitte geben Sie den neuen Käufernamen ein:");
+							String newBuyerName = scanner.nextLine();
+
+							System.out.println("Bitte geben Sie die neue Anzahl der Tickets ein:");
+							String ticketCountInput = scanner.nextLine();
+							if ("exit".equalsIgnoreCase(ticketCountInput)) {
+								break; // user chose to exit, break the loop
+							}
+							int newTicketCount = Integer.parseInt(ticketCountInput);
+
+							TicketRequest updateRequest = new TicketRequest();
+							updateRequest.setBuyerName(newBuyerName);
+							updateRequest.setTicketCount(newTicketCount);
+
+							try {
+								Ticket updatedTicket = movieService.updateTicket(ticketIdToUpdate, updateRequest);
+								System.out.println("Ticket erfolgreich aktualisiert.");
+								break; // successful update, break the loop
+							} catch (IllegalArgumentException e) {
+								System.out.println(e.getMessage());
+							}
+						} catch (NumberFormatException e) {
+							System.out.println("Die Ticket-ID und die Ticket-Anzahl müssen Zahlen sein. Bitte versuchen Sie es erneut oder geben Sie 'exit' ein, um abzubrechen.");
+						}
 					}
 					break;
 
-
 				case "3":
-					// Stornieren
+					// Cancel
 					while (true) {
 						System.out.println("Bitte geben Sie die Ticket-ID ein, die Sie stornieren möchten:");
 						try {
 							Long ticketIdToCancel = Long.parseLong(scanner.nextLine());
 							movieService.cancelTicket(ticketIdToCancel);
 							System.out.println("Ticket erfolgreich storniert.");
-							break; // beenden Sie die Wiederholungsschleife, wenn die Stornierung erfolgreich ist
+							break; // Exit the loop if the cancellation is successful
 						} catch (IllegalArgumentException e) {
 							System.out.println("Ticket-ID nicht gefunden. Wollen Sie es erneut versuchen? [1] Ja, [2] Nein");
 							String retryResponse = scanner.nextLine();
 							if (!retryResponse.equals("1")) {
-								break; // beenden Sie die Wiederholungsschleife, wenn der Benutzer nicht erneut versuchen möchte
+								break; // Exit the loop if the user does not want to retry again
 							}
 						}
 					}

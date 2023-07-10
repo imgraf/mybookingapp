@@ -25,7 +25,7 @@ public class Movie {
         this.description = description;
     }
 
-    // Getter und Setter für die Attribute
+    // Getters and setters for the attributes
 
     public int getId() {
         return id;

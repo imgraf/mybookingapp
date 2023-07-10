@@ -6,7 +6,7 @@ public class TicketRequest {
     private String bookingNumber;
     private int ticketCount;
 
-    // Konstruktor, Getter und Setter für die Attribute
+    // Constructor, getters, and setters for the attributes
 
     public TicketRequest() {
     }

@@ -58,7 +58,6 @@ public class MovieServiceTest {
         // Given
         TicketRequest ticketRequest = new TicketRequest();
         ticketRequest.setBuyerName("Test Buyer");
-        // ... Set any other fields on the ticketRequest ...
 
         Ticket ticket = new Ticket(ticketRequest);
         when(ticketRepository.save(any(Ticket.class))).thenReturn(ticket);
@@ -71,7 +70,6 @@ public class MovieServiceTest {
         verify(ticketRepository, times(1)).save(any(Ticket.class));
     }
 
-    // ... You can add similar tests for the other methods ...
 
     @Test
     public void cancelTicketTest() {
@@ -97,7 +95,6 @@ public class MovieServiceTest {
 
         TicketRequest ticketRequest = new TicketRequest();
         ticketRequest.setBuyerName("Updated Buyer");
-        // ... set other fields on the ticketRequest ...
 
         when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(ticket));
         when(ticketRepository.save(ticket)).thenReturn(ticket);

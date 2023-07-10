@@ -29,34 +29,33 @@ public class MovieService {
     }
 
     public Ticket buyTicket(TicketRequest ticketRequest) {
-        // Validierung
+        // Validation
         if (ticketRequest.getBuyerName().isEmpty()) {
             throw new IllegalArgumentException("Buyer name is required");
         }
 
-        // Erstellen Sie das neue Ticket und speichern Sie es
         Ticket ticket = new Ticket(ticketRequest);
         return ticketRepository.save(ticket);
     }
 
     public void cancelTicket(Long ticketId) {
-        // Überprüfen Sie, ob das Ticket existiert
+        // Check if the ticket exists
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid ticket id"));
 
-        // Löschen Sie das Ticket
+        // Delete the ticket
         ticketRepository.delete(ticket);
     }
 
     public Ticket updateTicket(Long ticketId, TicketRequest ticketRequest) {
-        // Finden Sie das Ticket und aktualisieren Sie die Daten
+        // Find the ticket and update the data
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new IllegalArgumentException("Ticket mit der ID " + ticketId + " existiert nicht."));
 
         ticket.setBuyerName(ticketRequest.getBuyerName());
         ticket.setBookingNumber(ticketRequest.getBookingNumber());
 
-        // Speichern Sie das aktualisierte Ticket
+        // Save the updated ticket
         return ticketRepository.save(ticket);
     }
 
@@ -73,10 +72,3 @@ public class MovieService {
         return this.entityManager;
     }
 }
-
-    //----------------------------------------------------------------------//
-
-
-
-    //----------------------------------------------------------------------//
-

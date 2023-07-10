@@ -17,18 +17,18 @@ public class MovieControllerTest {
 
     @Test
     public void testGetMovieById() {
-        // Erstellen Sie ein Mock für den MovieService
+        // Create a mock for the MovieService
         MovieService movieService = Mockito.mock(MovieService.class);
-        // Erstellen Sie den Controller mit dem Mock-Service
+        // Create the controller with the mock service
         MovieController controller = new MovieController(movieService);
-        // Erstellen Sie ein Film-Objekt
+        // Create a movie object
         Movie movie = new Movie();
         movie.setId(1);
-        // Stellen Sie ein, dass der Service dieses Film-Objekt zurückgibt, wenn getMovieById aufgerufen wird
+        // Set up the service to return this movie object when getMovieById is called
         when(movieService.getMovieById(1L)).thenReturn(movie);
-        // Rufen Sie die Methode auf dem Controller auf
+        // Call the method on the controller
         ResponseEntity<Movie> response = controller.getMovieById(1L);
-        // Überprüfen Sie, dass der Statuscode OK ist und dass der Körper das erwartete Film-Objekt enthält
+        // Check that the status code is OK and that the body contains the expected movie object
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(movie, response.getBody());
     }
@@ -70,7 +70,7 @@ public class MovieControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(updatedTicket, response.getBody());
     }
-    // Ähnliche Tests könnten für die anderen Methoden geschrieben werden
+
 
     @Test
     public void testUpdateTicketWithDifferentParams() {
