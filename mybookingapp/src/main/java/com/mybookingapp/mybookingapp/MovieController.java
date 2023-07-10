@@ -3,8 +3,10 @@ package com.mybookingapp.mybookingapp;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/movies")
+@RequestMapping("/mymovies")
 public class MovieController {
 
     private final MovieService movieService;
@@ -36,4 +38,13 @@ public class MovieController {
         Ticket updatedTicket = movieService.updateTicket(ticketId, ticketRequest);
         return ResponseEntity.ok(updatedTicket);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Movie>> getAllMovies() {
+        List<Movie> movies = movieService.getAllMovies();
+        return ResponseEntity.ok(movies);
+    }
+
+
+
 }

@@ -4,6 +4,7 @@ public class TicketRequest {
     private String ticketId;
     private String buyerName;
     private String bookingNumber;
+    private int ticketCount;
 
     // Konstruktor, Getter und Setter für die Attribute
 
@@ -32,5 +33,13 @@ public class TicketRequest {
 
     public void setBookingNumber(String bookingNumber) {
         this.bookingNumber = bookingNumber;
+    }
+
+    public int getTicketCount() {
+        return ticketCount;
+    }
+
+    public void setTicketCount(int ticketCount) {
+        this.ticketCount = ticketCount;
     }
 }

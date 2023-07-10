@@ -3,12 +3,12 @@ package com.mybookingapp.mybookingapp;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "movies")
+@Table(name = "mymovies")
 public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String title;
     private String genre;
@@ -27,11 +27,11 @@ public class Movie {
 
     // Getter und Setter für die Attribute
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

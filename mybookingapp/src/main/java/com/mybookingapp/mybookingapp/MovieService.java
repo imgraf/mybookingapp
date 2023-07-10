@@ -1,14 +1,20 @@
 package com.mybookingapp.mybookingapp;
 
-import com.mybookingapp.mybookingapp.MovieRepository;
-import com.mybookingapp.mybookingapp.TicketRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class MovieService {
 
     private final MovieRepository movieRepository;
     private final TicketRepository ticketRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     public MovieService(MovieRepository movieRepository, TicketRepository ticketRepository) {
         this.movieRepository = movieRepository;
@@ -20,33 +26,53 @@ public class MovieService {
     }
 
     public Ticket buyTicket(TicketRequest ticketRequest) {
-        // Validiere die Ticketanfrage
-        // (Fügen Sie hier Ihren Validierungscode ein)
+        // Validierung
+        if (ticketRequest.getBuyerName().isEmpty()) {
+            throw new IllegalArgumentException("Buyer name is required");
+        }
 
-        // Erstelle ein Ticket basierend auf der Ticketanfrage
-        Ticket newTicket = new Ticket(ticketRequest);
-        // (Dank des neuen Konstruktors, den Sie in Ticket.java hinzugefügt haben, sollte dies nun funktionieren)
-
-        // Speichere das Ticket in der Datenbank und gib es zurück
-        return ticketRepository.save(newTicket);
+        // Erstellen Sie das neue Ticket und speichern Sie es
+        Ticket ticket = new Ticket(ticketRequest);
+        return ticketRepository.save(ticket);
     }
 
-
     public void cancelTicket(Long ticketId) {
-        // Finden Sie das Ticket in der Datenbank anhand der Ticket-ID
+        // Überprüfen Sie, ob das Ticket existiert
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid ticket id"));
 
-        // Überprüfen Sie, ob das Ticket existiert und stornierbar ist
-
-        // Stornieren Sie das Ticket in der Datenbank
+        // Löschen Sie das Ticket
+        ticketRepository.delete(ticket);
     }
 
     public Ticket updateTicket(Long ticketId, TicketRequest ticketRequest) {
-        // Finden Sie das Ticket in der Datenbank anhand der Ticket-ID
-        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new IllegalArgumentException("Invalid ticket id: " + ticketId));
+        // Finden Sie das Ticket und aktualisieren Sie die Daten
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid ticket id"));
 
-        // Überprüfen Sie, ob das Ticket änderbar ist
-        // Aktualisieren Sie die Ticketdetails basierend auf der Ticketanfrage
+        ticket.setBuyerName(ticketRequest.getBuyerName());
+        ticket.setBookingNumber(ticketRequest.getBookingNumber());
 
+        // Speichern Sie das aktualisierte Ticket
         return ticketRepository.save(ticket);
     }
+
+    public List<Movie> getAllMovies() {
+        return movieRepository.findAll();
+    }
+
+    @Transactional
+    public void saveMovie(Movie movie) {
+        entityManager.merge(movie);
+    }
+
+
+
 }
+
+    //----------------------------------------------------------------------//
+
+
+
+    //----------------------------------------------------------------------//
+
