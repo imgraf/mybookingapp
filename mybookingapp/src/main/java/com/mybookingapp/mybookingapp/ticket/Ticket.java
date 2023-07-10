@@ -1,4 +1,4 @@
-package com.mybookingapp.mybookingapp;
+package com.mybookingapp.mybookingapp.ticket;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -61,4 +61,6 @@ public class Ticket {
     public void setBookingNumber(String bookingNumber) {
         this.bookingNumber = bookingNumber;
     }
+
 }
+

@@ -1,6 +1,6 @@
-package com.mybookingapp.mybookingapp;
+package com.mybookingapp.mybookingapp.movie;
+import com.mybookingapp.mybookingapp.movie.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -1,8 +1,9 @@
-package com.mybookingapp.mybookingapp;
+package com.mybookingapp.mybookingapp.movie;
 
+import com.mybookingapp.mybookingapp.ticket.Ticket;
+import com.mybookingapp.mybookingapp.ticket.TicketRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -44,7 +45,4 @@ public class MovieController {
         List<Movie> movies = movieService.getAllMovies();
         return ResponseEntity.ok(movies);
     }
-
-
-
 }

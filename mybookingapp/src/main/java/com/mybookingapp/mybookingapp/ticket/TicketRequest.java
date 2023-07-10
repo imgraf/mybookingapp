@@ -1,4 +1,4 @@
-package com.mybookingapp.mybookingapp;
+package com.mybookingapp.mybookingapp.ticket;
 
 public class TicketRequest {
     private String ticketId;

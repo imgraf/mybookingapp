@@ -1,6 +1,6 @@
-package com.mybookingapp.mybookingapp;
+package com.mybookingapp.mybookingapp.ticket;
 
-import com.mybookingapp.mybookingapp.Ticket;
+import com.mybookingapp.mybookingapp.ticket.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

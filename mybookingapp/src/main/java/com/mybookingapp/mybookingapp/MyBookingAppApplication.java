@@ -1,10 +1,13 @@
 package com.mybookingapp.mybookingapp;
 
+import com.mybookingapp.mybookingapp.movie.Movie;
+import com.mybookingapp.mybookingapp.movie.MovieService;
+import com.mybookingapp.mybookingapp.ticket.Ticket;
+import com.mybookingapp.mybookingapp.ticket.TicketRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -59,10 +62,14 @@ public class MyBookingAppApplication {
 					TicketRequest updateRequest = new TicketRequest();
 					updateRequest.setBuyerName(newBuyerName);
 					updateRequest.setTicketCount(newTicketCount);
-					// Sie müssen die Methode im MovieService und TicketRequest aktualisieren, um ticketCount zu behandeln
-					Ticket updatedTicket = movieService.updateTicket(ticketIdToUpdate, updateRequest);
-					System.out.println("Ticket erfolgreich aktualisiert.");
+					try {
+						Ticket updatedTicket = movieService.updateTicket(ticketIdToUpdate, updateRequest);
+						System.out.println("Ticket erfolgreich aktualisiert.");
+					} catch (IllegalArgumentException e) {
+						System.out.println(e.getMessage());
+					}
 					break;
+
 
 				case "3":
 					// Stornieren

@@ -1,8 +1,10 @@
-package com.mybookingapp.mybookingapp;
+package com.mybookingapp.mybookingapp.movie;
 
+import com.mybookingapp.mybookingapp.ticket.Ticket;
+import com.mybookingapp.mybookingapp.ticket.TicketRepository;
+import com.mybookingapp.mybookingapp.ticket.TicketRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -15,6 +17,7 @@ public class MovieService {
 
     @Autowired
     private EntityManager entityManager;
+
 
     public MovieService(MovieRepository movieRepository, TicketRepository ticketRepository) {
         this.movieRepository = movieRepository;
@@ -48,7 +51,7 @@ public class MovieService {
     public Ticket updateTicket(Long ticketId, TicketRequest ticketRequest) {
         // Finden Sie das Ticket und aktualisieren Sie die Daten
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid ticket id"));
+                .orElseThrow(() -> new IllegalArgumentException("Ticket mit der ID " + ticketId + " existiert nicht."));
 
         ticket.setBuyerName(ticketRequest.getBuyerName());
         ticket.setBookingNumber(ticketRequest.getBookingNumber());
@@ -66,8 +69,9 @@ public class MovieService {
         entityManager.merge(movie);
     }
 
-
-
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
 }
 
     //----------------------------------------------------------------------//
