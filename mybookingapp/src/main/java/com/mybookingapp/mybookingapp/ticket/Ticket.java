@@ -11,23 +11,20 @@ public class Ticket {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    private String ticketId;
-    private String buyerName;
-    private String bookingNumber;
+    private String buyer_name;
+
+    private String booking_number;
+    private String movie_title;
+    private int ticket_number;
 
     public Ticket() {
     }
 
-    public Ticket(String ticketId, String buyerName, String bookingNumber) {
-        this.ticketId = ticketId;
-        this.buyerName = buyerName;
-        this.bookingNumber = bookingNumber;
-    }
-
     public Ticket(TicketRequest ticketRequest) {
-        this.ticketId = ticketRequest.getTicketId();
-        this.buyerName = ticketRequest.getBuyerName();
-        this.bookingNumber = ticketRequest.getBookingNumber();
+        this.buyer_name = ticketRequest.getBuyerName();
+        this.booking_number = ticketRequest.getBookingNumber();
+        this.movie_title = ticketRequest.getMovieTitle();
+        this.ticket_number = ticketRequest.getTicketCount();
     }
 
     public Long getId() {
@@ -38,28 +35,29 @@ public class Ticket {
         this.id = id;
     }
 
-    public String getTicketId() {
-        return ticketId;
-    }
-
-    public void setTicketId(String ticketId) {
-        this.ticketId = ticketId;
-    }
 
     public String getBuyerName() {
-        return buyerName;
+        return buyer_name;
     }
 
     public void setBuyerName(String buyerName) {
-        this.buyerName = buyerName;
+        this.buyer_name = buyerName;
     }
 
     public String getBookingNumber() {
-        return bookingNumber;
+        return booking_number;
+    }
+
+    public String getMovieName() {
+        return movie_title;
+    }
+
+    public int getTicketNumber() {
+        return ticket_number;
     }
 
     public void setBookingNumber(String bookingNumber) {
-        this.bookingNumber = bookingNumber;
+        this.booking_number = bookingNumber;
     }
 
 }

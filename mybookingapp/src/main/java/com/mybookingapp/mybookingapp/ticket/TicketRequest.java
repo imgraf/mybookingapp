@@ -1,23 +1,16 @@
 package com.mybookingapp.mybookingapp.ticket;
 
 public class TicketRequest {
-    private String ticketId;
     private String buyerName;
     private String bookingNumber;
     private int ticketCount;
+    private String movieName;
 
     // Constructor, getters, and setters for the attributes
 
     public TicketRequest() {
     }
 
-    public String getTicketId() {
-        return ticketId;
-    }
-
-    public void setTicketId(String ticketId) {
-        this.ticketId = ticketId;
-    }
 
     public String getBuyerName() {
         return buyerName;
@@ -41,5 +34,13 @@ public class TicketRequest {
 
     public void setTicketCount(int ticketCount) {
         this.ticketCount = ticketCount;
+    }
+
+    public void setMovieTitle(String movieName) {
+        this.movieName = movieName;
+    }
+
+    public String getMovieTitle() {
+        return movieName;
     }
 }

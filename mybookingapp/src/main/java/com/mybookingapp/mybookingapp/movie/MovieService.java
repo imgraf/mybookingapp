@@ -52,8 +52,8 @@ public class MovieService {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new IllegalArgumentException("Ticket mit der ID " + ticketId + " existiert nicht."));
 
+        // ticket.setBookingNumber(ticketRequest.getBookingNumber());
         ticket.setBuyerName(ticketRequest.getBuyerName());
-        ticket.setBookingNumber(ticketRequest.getBookingNumber());
 
         // Save the updated ticket
         return ticketRepository.save(ticket);

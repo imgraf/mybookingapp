@@ -5,6 +5,8 @@ import com.mybookingapp.mybookingapp.movie.MovieService;
 import com.mybookingapp.mybookingapp.ticket.Ticket;
 import com.mybookingapp.mybookingapp.ticket.TicketRequest;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,61 +24,89 @@ public class Runner {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Was kann ich für Sie tun? [1] Buchen [2] Ändern [3] Stornieren [4] Beenden ([5] Neuen Film hinzufügen)");
+            System.out.println("""
+            What can I do for you? 
+            [1] Book 
+            [2] Change 
+            [3] Cancel 
+            [4] Exit 
+            [5] Add new movie \n""");
+
+            System.out.print("Your option: ");
             String command = scanner.nextLine();
 
             switch (command) {
                 case "1":
                     // Book
-                    this.book();
-                    System.out.println("Bitte geben Sie den Film-ID ein:");
+                    this.displayAllMovies();
+
+                    String bookingID = this.createBookingId();
+
+                    System.out.print("Please enter the film ID: ");
                     Long movieId = Long.parseLong(scanner.nextLine());
-                    System.out.println("Bitte geben Sie Ihren Namen ein:");
+                    String movieName = this.getMovieName(movieId);
+
+                    System.out.print("Movie name: " + movieName);
+
+                    System.out.println(" ");
+
+                    System.out.print("Please enter your name: ");
                     String buyerName = scanner.nextLine();
-                    System.out.println("Bitte geben Sie die Anzahl der Tickets ein:");
+
+                    System.out.print("Please enter the number of tickets: ");
                     int ticketCount = Integer.parseInt(scanner.nextLine());
+
+                    System.out.println(" ");
+
                     TicketRequest ticketRequest = new TicketRequest();
+                    ticketRequest.setBookingNumber(bookingID);
+                    ticketRequest.setMovieTitle(movieName);
                     ticketRequest.setBuyerName(buyerName);
                     ticketRequest.setTicketCount(ticketCount);
 
                     Ticket newTicket = movieService.buyTicket(ticketRequest);
-                    System.out.println("Ticket erfolgreich gebucht. Ihre Ticket-ID ist: " + newTicket.getId());
+                    System.out.println("Ticket booked successfully. Your ticket ID is: " + newTicket.getId());
+                    System.out.println("Booking number: " + bookingID);
+                    System.out.println("Customer name: " + buyerName);
+                    System.out.println("Movie title: " + movieName);
+                    System.out.println("Number of tickets: " + ticketCount);
+                    System.out.println(" ");
+
                     break;
 
                 case "2":
                     // Change
                     while (true) {
                         try {
-                            System.out.println("Bitte geben Sie die Ticket-ID ein, die Sie ändern möchten:");
+                            System.out.print("Please enter the ticket ID you want to change: ");
                             String ticketIdInput = scanner.nextLine();
+
                             if ("exit".equalsIgnoreCase(ticketIdInput)) {
                                 break; // user chose to exit, break the loop
                             }
                             Long ticketIdToUpdate = Long.parseLong(ticketIdInput);
+                            
 
-                            System.out.println("Bitte geben Sie den neuen Käufernamen ein:");
+                            System.out.print("Please enter the new buyer name: ");
                             String newBuyerName = scanner.nextLine();
-
-                            System.out.println("Bitte geben Sie die neue Anzahl der Tickets ein:");
-                            String ticketCountInput = scanner.nextLine();
-                            if ("exit".equalsIgnoreCase(ticketCountInput)) {
-                                break; // user chose to exit, break the loop
-                            }
-                            int newTicketCount = Integer.parseInt(ticketCountInput);
 
                             TicketRequest updateRequest = new TicketRequest();
                             updateRequest.setBuyerName(newBuyerName);
-                            updateRequest.setTicketCount(newTicketCount);
 
                             try {
                                 Ticket updatedTicket = movieService.updateTicket(ticketIdToUpdate, updateRequest);
-                                System.out.println("Ticket erfolgreich aktualisiert.");
+                                System.out.println("Ticket successfully updated.");
+                                System.out.println("Customer name: " + updatedTicket.getBuyerName());
+                                System.out.println("Booking number: " + updatedTicket.getBookingNumber());
+                                System.out.println("Movie title: " + updatedTicket.getMovieName());
+                                System.out.println("Number of tickets: " + updatedTicket.getTicketNumber() + "\n");
+
                                 break; // successful update, break the loop
                             } catch (IllegalArgumentException e) {
                                 System.out.println(e.getMessage());
                             }
                         } catch (NumberFormatException e) {
-                            System.out.println("Die Ticket-ID und die Ticket-Anzahl müssen Zahlen sein. Bitte versuchen Sie es erneut oder geben Sie 'exit' ein, um abzubrechen.");
+                            System.out.println("The ticket ID and ticket count must be numbers. Please try again or enter 'exit' to cancel.");
                         }
                     }
                     break;
@@ -84,14 +114,14 @@ public class Runner {
                 case "3":
                     // Cancel
                     while (true) {
-                        System.out.println("Bitte geben Sie die Ticket-ID ein, die Sie stornieren möchten:");
+                        System.out.println("Please enter the ticket ID you wish to cancel:");
                         try {
                             Long ticketIdToCancel = Long.parseLong(scanner.nextLine());
                             movieService.cancelTicket(ticketIdToCancel);
-                            System.out.println("Ticket erfolgreich storniert.");
+                            System.out.println("Ticket successfully cancelled. \n");
                             break; // Exit the loop if the cancellation is successful
                         } catch (IllegalArgumentException e) {
-                            System.out.println("Ticket-ID nicht gefunden. Wollen Sie es erneut versuchen? [1] Ja, [2] Nein");
+                            System.out.println("Ticket ID not found. Do you want to try again? [1] Yes, [2] No");
                             String retryResponse = scanner.nextLine();
                             if (!retryResponse.equals("1")) {
                                 break; // Exit the loop if the user does not want to retry again
@@ -102,7 +132,7 @@ public class Runner {
 
 
                 case "4":
-                    System.out.println("Auf Wiedersehen!");
+                    System.out.println("Goodbye!");
                     System.exit(0);
 
                 case "5":
@@ -111,34 +141,59 @@ public class Runner {
                     movie.setId(scanner.nextInt());
                     scanner.nextLine();
 
-                    System.out.print("Titel: ");
+                    System.out.print("Title: ");
                     movie.setTitle(scanner.nextLine());
-                    System.out.print("Dauer: ");
+                    System.out.print("Duration: ");
                     movie.setDuration(scanner.nextInt());
                     scanner.nextLine();
 
-                    System.out.print("Beschreibung: ");
+                    System.out.print("Description: ");
                     movie.setDescription(scanner.nextLine());
                     System.out.print("Genre: ");
                     movie.setGenre(scanner.nextLine());
                     movieService.saveMovie(movie);
-                    System.out.println("Film erfolgreich hinzugefügt");
+                    System.out.println("Film successfully added");
                     break;
 
                 default:
-                    System.out.println("Unbekannte Option. Bitte versuchen Sie es erneut.");
+                    System.out.println("Unknown option. Please try again.");
             }
         }
     }
 
-    void book() {
+    void displayAllMovies() {
         // Get list of all movies
         List<Movie> movies = movieService.getAllMovies();
 
         // Display the list of movies to the user
-        System.out.println("Verfügbare Filme:");
+        System.out.println("Available movies:");
         for (Movie movie : movies) {
-            System.out.println("ID: " + movie.getId() + ", Titel: " + movie.getTitle() + ", Dauer: " + movie.getDuration() + " Minuten, Beschreibung: " + movie.getDescription() + ", Genre: " + movie.getGenre());
+            System.out.println("ID: " + movie.getId() + ", Title: " + movie.getTitle() + ", Duration: " + movie.getDuration() + " Minutes, Description: " + movie.getDescription() + ", Genre: " + movie.getGenre());
         }
+    }
+
+    public String getMovieName(Long id) {
+        String movieName = "";
+        List<Movie> movies = movieService.getAllMovies();
+
+        for (Movie movie : movies) {
+            if (movie.getId() == id) {
+                movieName = movie.getTitle();
+            }
+        }
+
+        return movieName;
+    }
+
+
+
+    public String createBookingId() {
+        LocalDateTime now = LocalDateTime.now();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss");
+
+        String booking_id = now.format(formatter);
+
+        return booking_id;
     }
 }
