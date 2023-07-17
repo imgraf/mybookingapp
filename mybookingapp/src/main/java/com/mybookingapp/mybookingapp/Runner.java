@@ -12,6 +12,8 @@ import java.util.Scanner;
 
 public class Runner {
 
+    Long movieId;
+    String movieName;
     public MovieService movieService;
     public MyBookingAppApplication myApp;
 
@@ -85,12 +87,18 @@ public class Runner {
                                 break; // user chose to exit, break the loop
                             }
                             Long ticketIdToUpdate = Long.parseLong(ticketIdInput);
-                            
-
-                            System.out.print("Please enter the new buyer name: ");
-                            String newBuyerName = scanner.nextLine();
-
                             TicketRequest updateRequest = new TicketRequest();
+
+                            this.displayAllMovies();
+
+                            System.out.print("Please enter the new movie ID: ");
+                            movieId = Long.parseLong(scanner.nextLine());
+                            movieName = this.getMovieName(movieId);
+                            updateRequest.setMovieTitle(movieName);
+                            System.out.print("Movie name: " + movieName);
+
+                            System.out.print("\nPlease enter the new buyer name: ");
+                            String newBuyerName = scanner.nextLine();
                             updateRequest.setBuyerName(newBuyerName);
 
                             try {

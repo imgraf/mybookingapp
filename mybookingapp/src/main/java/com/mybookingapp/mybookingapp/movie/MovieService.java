@@ -54,6 +54,7 @@ public class MovieService {
 
         // ticket.setBookingNumber(ticketRequest.getBookingNumber());
         ticket.setBuyerName(ticketRequest.getBuyerName());
+        ticket.setMovieTitle(ticketRequest.getMovieTitle());
 
         // Save the updated ticket
         return ticketRepository.save(ticket);

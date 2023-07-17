@@ -44,6 +44,10 @@ public class Ticket {
         this.buyer_name = buyerName;
     }
 
+    public void setMovieTitle(String movieTitle) {
+        this.movie_title = movieTitle;
+    }
+
     public String getBookingNumber() {
         return booking_number;
     }
