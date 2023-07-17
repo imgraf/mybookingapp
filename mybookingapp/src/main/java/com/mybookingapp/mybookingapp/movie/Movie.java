@@ -6,6 +6,8 @@ import javax.persistence.*;
 @Table(name = "mymovies")
 public class Movie {
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -24,6 +26,8 @@ public class Movie {
         this.duration = duration;
         this.description = description;
     }
+
+
 
     // Getters and setters for the attributes
 

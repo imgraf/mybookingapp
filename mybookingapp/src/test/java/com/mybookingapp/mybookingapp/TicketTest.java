@@ -14,10 +14,13 @@ public class TicketTest {
         String expectedBookingNumber = "BN123";
 
         // Act
-        Ticket ticket = new Ticket(expectedTicketId, expectedBuyerName, expectedBookingNumber);
+        Ticket ticket = new Ticket();
+        ticket.setId(Long.parseLong(expectedTicketId)); // Konvertierung von String zu Long
+        ticket.setBuyerName(expectedBuyerName);
+        ticket.setBookingNumber(expectedBookingNumber);
 
         // Assert
-        assertEquals(expectedTicketId, ticket.getTicketId());
+        assertEquals(expectedTicketId, String.valueOf(ticket.getId())); // Konvertierung von Long zu String
         assertEquals(expectedBuyerName, ticket.getBuyerName());
         assertEquals(expectedBookingNumber, ticket.getBookingNumber());
     }
